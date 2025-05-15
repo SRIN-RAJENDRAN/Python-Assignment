@@ -74,13 +74,13 @@ def create_note(note: NoteCreate, db: Session = Depends(get_db)):
     db.refresh(db_note)
     return db_note
 
-@api.get("/notes/", response_model=List[NoteResponse])
+@api.get("/notes/", response_model=List[NoteResponse],status_code=302)
 def read_notes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """Retrieves a list of notes."""
     notes = db.query(Note).offset(skip).limit(limit).all()
     return notes
 
-@api.get("/notes/{note_id}", response_model=NoteResponse)
+@api.get("/notes/{note_id}", response_model=NoteResponse,status_code=302)
 def read_note(note_id: int, db: Session = Depends(get_db)):
     """Retrieves a specific note by ID."""
     db_note = db.query(Note).filter(Note.id == note_id).first()
